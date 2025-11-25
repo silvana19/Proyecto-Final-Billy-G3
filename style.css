@@ -29,11 +29,12 @@ body {
 }
 
 .logo{
-  width:  50px;
-  height: 50px;
+  width:  30px;
+  height: 30px;
   margin-top: 4px;
-  margin-left: 4px;
+  margin-left: 24px;
   border-radius: 30px;
+  
 }
 
 header {
@@ -43,6 +44,7 @@ header {
   top: 0.01px;
   z-index: 9999999;
 }
+
 
 nav {
   float: right;
