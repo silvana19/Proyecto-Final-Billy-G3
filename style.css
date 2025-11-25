@@ -321,10 +321,46 @@ nav ul li:hover {
   background-color: black;
 }
 
-footer {
-  background-color: black;
+.footer {
+  background-color: #1e3932; /* verde Starbucks */
   color: white;
+  padding: 60px 20px;
+  font-family: Arial, sans-serif;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px;
+}
+
+.footer-column h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.footer-column a {
+  display: block;
+  color: #ffffffc7;
+  text-decoration: none;
+  margin-bottom: 12px;
+  font-size: 15px;
+  transition: 0.2s ease;
+}
+
+.footer-column a:hover {
+  color: white;
+  margin-left: 5px;
+}
+
+.footer-bottom {
   text-align: center;
-  padding: 10px;
-  height: 80vh;
+  margin-top: 50px;
+  padding-top: 20px;
+  border-top: 1px solid #ffffff40;
+  font-size: 14px;
+  color: #ffffffaa;
 }
