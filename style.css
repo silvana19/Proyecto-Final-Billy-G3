@@ -33,7 +33,7 @@ header {
   width: 100%;
   position: fixed;
   top: 0.01px;
-  z-index: 100;
+  z-index: 9999999;
 }
 
 nav {
@@ -115,7 +115,7 @@ nav ul li:hover {
 
   padding: 40px;
 
-  z-index: 99999;
+  z-index: 99;
   background-color: rgba(28, 28, 28, 0.886);
 
 }
