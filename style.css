@@ -1,5 +1,5 @@
 :root {
-  --shadow-color: 286deg 36% 56%;
+  --shadow-color: 169deg 100% 23%;
   --shadow-elevation-low: 0.3px 0.5px 0.7px hsl(var(--shadow-color) / 0.34),
     0.4px 0.8px 1px -1.2px hsl(var(--shadow-color) / 0.34),
     1px 2px 2.5px -2.5px hsl(var(--shadow-color) / 0.34);
@@ -41,7 +41,7 @@ header {
   width: 100%;
   position: fixed;
   top: 0.01px;
-  z-index: 100;
+  z-index: 9999999;
 }
 
 nav {
@@ -88,7 +88,7 @@ nav ul li:hover {
 /* Estructura de la pagina  */
 
 #S1 {
-  background-color: #eca023;
+  background-color: #17db64;
   width: 100%;
   height: 80vh;
   padding-top: 100px;
@@ -104,9 +104,12 @@ nav ul li:hover {
   margin: auto;
   width: 850px;
   height: 250px;
-  background-color: red;
+  /* background-color: red; */
   border-radius: 10px;
   overflow-y: hidden;
+  overflow-x: hidden;
+
+
 }
 
 .info {
@@ -119,6 +122,10 @@ nav ul li:hover {
   color: #fff;
 
   padding: 40px;
+
+  z-index: 99;
+  background-color: rgba(28, 28, 28, 0.886);
+
 }
 
 .info h1 {
@@ -131,6 +138,20 @@ nav ul li:hover {
   height: 300px;
   background-color: bisque;
   border-radius: 0 10px 10px 0;
+}
+
+.img img {
+  width: 850px;
+  height: 600px;
+  background-color: bisque;
+  border-radius: 0 10px 10px 0;
+
+  position: relative;
+  left: -350px;
+  z-index: 1;
+
+
+
 }
 
 .cl {
@@ -147,14 +168,14 @@ nav ul li:hover {
 }
 
 .cl:hover {
-  color: #000;
-  background-color: rgb(243, 178, 0);
+  color: #fff;
+  background-color: #05471d;
   box-shadow: var(--shadow-elevation-medium);
 }
 
 /* Profiles */
 #S2 {
-  background-color: #081b72;
+  background-color: #0d2919;
   width: 100%;
   padding-top: 70px;
   padding-bottom: 70px;
@@ -194,12 +215,11 @@ nav ul li:hover {
   object-position: 0px -10px;
 }
 
-.silvana{
+.cardp img.silvana {
   width: 100%;
   height: 150px;
   object-fit: cover;
-  object-position: 0px 200px;
-
+  object-position: 0px -70px;
 }
 
 .infop {
@@ -217,14 +237,15 @@ nav ul li:hover {
 }
 
 #S3 {
-  background-color: #720808;
+  background-color: #f7fffa;
+
   width: 100%;
-  height: 60vh;
+  height: 120vh;
   padding-top: 50px;
 }
 
 .containerc {
-  background-color: red;
+  /* background-color: red; */
   height: 60vh;
 }
 
@@ -237,9 +258,11 @@ nav ul li:hover {
 }
 
 .card {
+  color: rgb(28, 28, 28);
+
   width: 250px;
   height: 300px;
-  background-color: bisque;
+  background-color: #17db64;
   margin: 10px;
   border-radius: 10px;
 }
@@ -253,6 +276,7 @@ nav ul li:hover {
 
 .card p {
   font-size: 15px;
+  padding-left: 10px;
 }
 
 .buy {
@@ -275,7 +299,7 @@ nav ul li:hover {
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* separa contenido y botón */
-  height: 300px; /* ya lo tienes */
+  height: 300px; 
 }
 
 .infoc {
