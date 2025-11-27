@@ -1,22 +1,57 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Registrarse - Farmacia</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Registrarse</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
 </head>
-<body>
+<body class="bg-dark d-flex align-items-center justify-content-center" style="height: 100vh;">
 
-<h2>Crear Cuenta</h2>
+<?php if (isset($_GET["error"]) && $_GET["error"] === "correo_duplicado") : ?>
+    <div class="alert alert-danger text-center">
+        El correo ingresado ya está registrado. Intenta con otro.
+    </div>
+<?php endif; ?>
 
-<form action="funcs/register_user.php" method="POST">
-    <input type="text" name="nombre" placeholder="Nombre" required><br>
-    <input type="email" name="correo" placeholder="Correo" required><br>
-    <input type="password" name="password" placeholder="Contraseña" required><br>
-    <button type="submit">Registrar</button>
-</form>
+<?php if (isset($_GET["success"]) && $_GET["success"] === "registrado") : ?>
+    <div class="alert alert-success text-center">
+        Cuenta creada correctamente. ¡Ahora puedes iniciar sesión!
+    </div>
+<?php endif; ?>
 
-<a href="login.php">Ya tengo cuenta</a>
+
+<div class="card p-4 shadow-lg" style="width: 380px;">
+    <h3 class="text-center mb-3">Crear Cuenta</h3>
+
+    <?php if(isset($_GET["error"])): ?>
+    <div class="alert alert-danger">Este correo ya está registrado.</div>
+    <?php endif; ?>
+
+    <form action="funcs/register_user.php" method="POST">
+        <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" name="nombre" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Correo</label>
+            <input type="email" name="correo" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Contraseña</label>
+            <input type="password" name="password" class="form-control" required>
+        </div>
+
+        <button class="btn btn-success w-100">Registrarse</button>
+
+        <p class="mt-3 text-center">
+            ¿Ya tienes cuenta? <a href="login.php">Iniciar sesión</a>
+        </p>
+    </form>
+</div>
 
 </body>
+
+
 </html>

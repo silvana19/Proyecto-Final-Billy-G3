@@ -9,7 +9,7 @@
   </head>
   <body>
     <header>
-      <img class="logo" src="/assets/img/logo.webp" alt="" />
+      <img class="logo" src="assets/img/logo.webp" alt="" />
       
       <!-- aqui va el logo -->
       <nav>
@@ -19,9 +19,9 @@
           <li><a href="#S3" >Stock</a></li>
           <li><a href="#"></a></li>
           <li><a href="#"></a></li>
-
-          <li><a href="#">Registrarse</a></li>
-          <li class="b"><a href="#">Iniciar Sesi&oacute;n</a></li>
+        
+          <li><a href="register.php">Registrarse</a></li>
+          <li class="b"><a href="login.php">Iniciar Sesi&oacute;n</a></li>
         </ul>
       </nav>
     </header>
@@ -30,7 +30,7 @@
         <div class="info">
           <h1>La mejor soluci&oacute;n a tus problemas</h1>
 
-          <a class="cl" href="#">Descubre EMPRESA REWARDS</a>
+          <a class="cl" href="#">Descubre LOVE REWARDS</a>
         </div>
 
         <div class="img">
@@ -56,7 +56,7 @@
           </div>
 
           <div class="cardp">
-            <img class="joshua" src="/Proyecto-Final-Billy-G3/assets/img/joshua.jpeg" alt="Persona 2" />
+            <img class="joshua" src="assets/img/joshua.jpeg" alt="Persona 2" />
             <div class="infop">
               <h3>Joshual</h3>
               <p>Desarrollador</p>
@@ -93,67 +93,68 @@
         <div class="cards">
           <div class="card">
             <img
-              src="https://www.starbucks.es/sites/starbucks-es-pwa/files/styles/c22_featured_card_531x273/public/2025-09/Banner%20Home%20C2_0.jpg.webp?itok=EXvThkAL"
+              src="assets/img/paracetamol.jpg"
               alt=""
             />
             <div class="infoc">
-              <h3>Paracetamol</h3>
-              <p>lorem10</p>
+            <center> <h3>Paracetamol</h3></center> 
+
+            <center><p>Analgésico y antipirético.</p></center>
               <a href="" class="buy">Comprar Ahora</a>
             </div>
           </div>
           <div class="card">
             <img
-              src="https://www.starbucks.es/sites/starbucks-es-pwa/files/styles/c22_featured_card_531x273/public/2025-09/Banner%20Home%20C2_0.jpg.webp?itok=EXvThkAL"
+              src="assets/img/amoxicilina.png"
               alt=""
             />
             <div class="infoc">
-              <h3>Acetaminof&eacute;n</h3>
-              <p>lorem10</p>
+              <center><h3>Amoxicilina</h3></center>
+              <center><p>Su acción consiste en detener el crecimiento de las bacterias.</p></center>
               <a href="" class="buy">Comprar Ahora</a>
             </div>
           </div>
           <div class="card">
             <img
-              src="https://www.starbucks.es/sites/starbucks-es-pwa/files/styles/c22_featured_card_531x273/public/2025-09/Banner%20Home%20C2_0.jpg.webp?itok=EXvThkAL"
+              src="assets/img/ibuprofeno.png"
               alt=""
             />
             <div class="infoc">
-              <h3>Ibuprofeno</h3>
-              <p>lorem10</p>
+             <center><h3>Ibuprofeno</h3></center> 
+             <center> <p>Se usa para reducir la fiebre y aliviar dolores menores, cefaleas, dolor muscular.</p></center>
               <a href="" class="buy">Comprar Ahora</a>
             </div>
           </div>
           <div class="card">
             <img
-              src="https://www.starbucks.es/sites/starbucks-es-pwa/files/styles/c22_featured_card_531x273/public/2025-09/Banner%20Home%20C2_0.jpg.webp?itok=EXvThkAL"
+              src="assets/img/tylenol.webp"
               alt=""
             />
             <div class="infoc">
-              <h3>Paracetamol</h3>
-              <p>lorem10</p>
+             <center><h3>Tylenol</h3></center> 
+             <center> <p>Se usa para tratar dolores y molestias leves y para bajar la fiebre.</p></center>
               <a href="" class="buy">Comprar Ahora</a>
             </div>
           </div>
           <div class="card">
             <img
-              src="https://www.starbucks.es/sites/starbucks-es-pwa/files/styles/c22_featured_card_531x273/public/2025-09/Banner%20Home%20C2_0.jpg.webp?itok=EXvThkAL"
+              src="assets/img/advil.jpg"
               alt=""
             />
             <div class="infoc">
-              <h3>Acetaminof&eacute;n</h3>
-              <p>lorem10</p>
+             <center><h3>Advil</h3></center> 
+              <center><p>Es una marca de ibuprofeno, un antiinflamatorio.</p></center>
               <a href="" class="buy">Comprar Ahora</a>
             </div>
           </div>
           <div class="card">
             <img
-              src="https://www.starbucks.es/sites/starbucks-es-pwa/files/styles/c22_featured_card_531x273/public/2025-09/Banner%20Home%20C2_0.jpg.webp?itok=EXvThkAL"
+              src="assets/img/evital.jpg"
               alt=""
             />
             <div class="infoc">
-              <h3>Ibuprofeno</h3>
-              <p>lorem10</p>
+              <center><h3>Evital</h3></center>
+             <center> <p> Es el nombre comercial de una píldora anticonceptiva de emergencia.</p></center>
               <a href="" class="buy">Comprar Ahora</a>
             </div>
           </div>
@@ -161,6 +162,7 @@
       </div>
     </section>
     
+     
     <footer class="footer">
   <div class="footer-container">
     
@@ -200,11 +202,10 @@
   </div>
 
   <div class="footer-bottom">
-    <p>© 2025 Tu Página — Inspirado en Starbucks</p>
+    <p>© 2025 Farmacia del amor — Inspirado en Starbucks</p>
   </div>
 </footer>
-
-    <script src="script.js"></script>
-    <script src="libs/bootstrap-5.3.8-dist/bootstrap.min.js"></script>
+    <script src="/Proyecto-Final-Billy-G3/script.js"></script>
+    <script src="/Proyecto-Final-Billy-G3/libs/bootstrap-5.3.8-dist/bootstrap.min.js"></script>
   </body>
 </html>

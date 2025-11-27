@@ -68,7 +68,7 @@ nav ul li a {
 }
 
 nav ul li:hover {
-  background: #eca023;
+  background: rgb(0, 162, 30);
 }
 
 .b a {
@@ -82,7 +82,7 @@ nav ul li:hover {
 
 .b a:hover {
   color: white;
-  background-color: black;
+  background-color: rgb(0, 162, 30);
 }
 
 /* Estructura de la pagina  */
@@ -302,9 +302,11 @@ x .cardp:hover {
 
 .card img {
   width: 250px;
+  height: 150px;
   padding: 0;
   margin: 0;
   border-radius: 10px 10px 0 0;
+  object-fit: cover;
 }
 
 .card p {
