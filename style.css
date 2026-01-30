@@ -59,6 +59,7 @@ nav ul li {
   font-size: 16px;
   transition: all 0.3s;
 }
+
 nav ul li a {
   display: block;
   padding: 10px;
@@ -84,6 +85,7 @@ nav ul li:hover {
   color: white;
   background-color: rgb(0, 162, 30);
 }
+
 /* Estructura de la pagina  */
 
 #S1 {
@@ -92,11 +94,13 @@ nav ul li:hover {
   height: 80vh;
   padding-top: 100px;
 }
+
 .center {
   display: flex;
   justify-content: center;
   margin: auto;
 }
+
 .container {
   display: flex;
   justify-content: center;
@@ -227,6 +231,7 @@ nav ul li:hover {
   0% {
     transform: translateX(0);
   }
+
   50% {
     transform: translateX(5%);
   }
@@ -235,6 +240,7 @@ nav ul li:hover {
     transform: translateX(0);
   }
 }
+
 x .cardp:hover {
   transform: scale(1.05);
 }
@@ -269,15 +275,19 @@ x .cardp:hover {
 
 #S3 {
   background-color: #f7fffa;
-
   width: 100%;
-  height: 120vh;
+  min-height: 100vh;
+  /* Allow it to grow */
+  height: auto;
   padding-top: 50px;
+  padding-bottom: 50px;
+  /* Add bottom padding */
 }
 
 .containerc {
-  /* background-color: red; */
-  height: 60vh;
+  height: auto;
+  /* Adapts to content */
+  width: 100%;
 }
 
 .cards {
@@ -289,69 +299,106 @@ x .cardp:hover {
 }
 
 .card {
-  color: rgb(255, 255, 255);
-
-  width: 250px;
-  height: 300px;
   background-color: rgb(28, 28, 28);
+  /* Dark background */
+  color: white;
+  /* White text */
+  width: 280px;
+  height: 460px;
+  margin: 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  /* Subtle white border */
 
-  margin: 10px;
-  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-elevation-medium);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+  /* Deeper shadow on hover */
 }
 
 .card img {
-  width: 250px;
-  height: 150px;
-  padding: 0;
-  margin: 0;
-  border-radius: 10px 10px 0 0;
+  width: 100%;
+  height: 220px;
   object-fit: cover;
-}
-
-.card p {
-  font-size: 15px;
-  padding-left: 10px;
-}
-
-.buy {
-  display: flex;
-  justify-content: center;
-  margin: auto;
-  text-decoration: none;
-  color: black;
-  background-color: white;
-  padding: 10px;
-  border-radius: 50px;
-  transition: all 0.3s;
-}
-
-.buy:hover {
-  color: white;
-  background-color: rgb(0, 162, 30);
-  scale: 1.1;
-}
-
-.card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* separa contenido y botón */
-  height: 300px;
+  border-bottom: 1px solid #333;
 }
 
 .infoc {
-  padding: 10px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
+  gap: 8px;
+  /* Spacing between elements */
   flex-grow: 1;
+  text-align: center;
+}
+
+.infoc h3 {
+  font-size: 1.2rem;
+  color: white;
+  /* White title */
+  margin: 0;
+  font-weight: bold;
+}
+
+.infoc p {
+  font-size: 0.95rem;
+  color: #ccc;
+  /* Light gray for description */
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Custom class for Price (used in index.php) */
+.text-primary {
+  color: #4ade80 !important;
+  /* Bright green price for dark mode */
+  font-size: 1.25rem;
+  margin-top: 5px;
+}
+
+.text-muted {
+  color: #999 !important;
+  font-size: 0.85rem;
+  margin-bottom: 15px;
 }
 
 .buy {
-  margin-top: auto; /* empuja el botón hacia abajo */
-  align-self: center; /* lo centra horizontalmente */
+  display: block;
+  width: 85%;
+  margin: 0 auto 20px auto;
+  text-decoration: none;
+  background-color: white;
+  /* White button pops on dark bg */
+  color: black;
+  padding: 12px;
+  border-radius: 50px;
+  font-weight: bold;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.buy:hover {
+  background-color: rgb(0, 162, 30);
+  /* Green on hover */
+  color: white;
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 162, 30, 0.4);
 }
 
 .footer {
-  background-color: #1e3932; /* verde Starbucks */
+  background-color: #1e3932;
+  /* verde Starbucks */
   color: white;
   padding: 60px 20px;
   font-family: Arial, sans-serif;

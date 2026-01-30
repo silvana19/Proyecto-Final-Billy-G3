@@ -1,46 +1,61 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Farmacia</title>
-    <link rel="shortcut icon" href="assets/img/logo.webp" type="image/x-icon">
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <header>
-      <img class="logo" src="assets/img/logo.webp" alt="" />
-      
-      <!-- aqui va el logo -->
-      <nav>
-        <ul>
-          <li><a href="#S1"  >Inicio</a></li>
-          <li><a href="#S2" >Desarrolladores</a></li>
-          <li><a href="#S3" >Stock</a></li>
-          <li><a href="#"></a></li>
-          <li><a href="#"></a></li>
-        
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Farmacia</title>
+  <link rel="shortcut icon" href="assets/img/logo.webp" type="image/x-icon">
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- Inicio Sesión PHP -->
+  <?php session_start(); ?>
+
+  <header>
+    <img class="logo" src="assets/img/logo.webp" alt="" />
+
+    <!-- aqui va el logo -->
+    <nav>
+      <ul>
+        <li><a href="#S1">Inicio</a></li>
+        <li><a href="#S2">Desarrolladores</a></li>
+        <li><a href="#S3">Stock</a></li>
+        <li><a href="#"></a></li>
+        <li><a href="#"></a></li>
+
+        <?php if (isset($_SESSION['user_id'])): ?>
+          <li><span style="color: white; font-weight: bold;">Hola,
+              <?php echo $_SESSION['nombre']; ?>
+            </span></li>
+          <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'admin'): ?>
+            <li><a href="admin_dashboard.php">Panel Admin</a></li>
+          <?php endif; ?>
+          <li class="b"><a href="funcs/logout.php">Cerrar Sesión</a></li>
+        <?php else: ?>
           <li><a href="register.php">Registrarse</a></li>
           <li class="b"><a href="login.php">Iniciar Sesi&oacute;n</a></li>
-        </ul>
-      </nav>
-    </header>
-    <section id="S1">
-      <div class="container">
-        <div class="info">
-          <h1>La mejor soluci&oacute;n a tus problemas</h1>
+        <?php endif; ?>
+      </ul>
+    </nav>
+  </header>
+  <section id="S1">
+    <div class="container">
+      <div class="info">
+        <h1>La mejor soluci&oacute;n a tus problemas</h1>
 
-          <a class="cl" href="#">Descubre LOVE REWARDS</a>
-        </div>
-
-        <div class="img">
-          <img src="assets/img/famacia.jpg" alt="" />
-        </div>
+        <a class="cl" href="#">Descubre LOVE REWARDS</a>
       </div>
-    </section>
+
+      <div class="img">
+        <img src="assets/img/famacia.jpg" alt="" />
+      </div>
+    </div>
+  </section>
 
 
-    </section>
+  </section>
 
   <section id="S2">
     <div class="carousel">
@@ -79,133 +94,135 @@
             </div>
           </div>
 
-      </div>
-  </div>
-
-</div>
-</section>
-
-
-
-    
-    <section id="S3">
-      <div class="containerc">
-        <div class="cards">
-          <div class="card">
-            <img
-              src="assets/img/paracetamol.jpg"
-              alt=""
-            />
-            <div class="infoc">
-            <center> <h3>Paracetamol</h3></center> 
-
-            <center><p>Analgésico y antipirético.</p></center>
-              <a href="" class="buy">Comprar Ahora</a>
-            </div>
-          </div>
-          <div class="card">
-            <img
-              src="assets/img/amoxicilina.png"
-              alt=""
-            />
-            <div class="infoc">
-              <center><h3>Amoxicilina</h3></center>
-              <center><p>Su acción consiste en detener el crecimiento de las bacterias.</p></center>
-              <a href="" class="buy">Comprar Ahora</a>
-            </div>
-          </div>
-          <div class="card">
-            <img
-              src="assets/img/ibuprofeno.png"
-              alt=""
-            />
-            <div class="infoc">
-             <center><h3>Ibuprofeno</h3></center> 
-             <center> <p>Se usa para reducir la fiebre y aliviar dolores menores, cefaleas, dolor muscular.</p></center>
-              <a href="" class="buy">Comprar Ahora</a>
-            </div>
-          </div>
-          <div class="card">
-            <img
-              src="assets/img/tylenol.webp"
-              alt=""
-            />
-            <div class="infoc">
-             <center><h3>Tylenol</h3></center> 
-             <center> <p>Se usa para tratar dolores y molestias leves y para bajar la fiebre.</p></center>
-              <a href="" class="buy">Comprar Ahora</a>
-            </div>
-          </div>
-          <div class="card">
-            <img
-              src="assets/img/advil.jpg"
-              alt=""
-            />
-            <div class="infoc">
-             <center><h3>Advil</h3></center> 
-              <center><p>Es una marca de ibuprofeno, un antiinflamatorio.</p></center>
-              <a href="" class="buy">Comprar Ahora</a>
-            </div>
-          </div>
-          <div class="card">
-            <img
-              src="assets/img/evital.jpg"
-              alt=""
-            />
-            <div class="infoc">
-              <center><h3>Evital</h3></center>
-             <center> <p> Es el nombre comercial de una píldora anticonceptiva de emergencia.</p></center>
-              <a href="" class="buy">Comprar Ahora</a>
-            </div>
-          </div>
         </div>
       </div>
-    </section>
-    
-     
-    <footer class="footer">
-  <div class="footer-container">
-    
-    <div class="footer-column">
-      <h3>Sobre Nosotros</h3>
-      <a href="#">Nuestra Historia</a>
-      <a href="#">Responsabilidad Social</a>
-      <a href="#">Trabaja con Nosotros</a>
-      <a href="#">Prensa</a>
-    </div>
 
-    <div class="footer-column">
-      <h3>Servicio al Cliente</h3>
-      <a href="#">Contáctanos</a>
-      <a href="#">Soporte</a>
-      <a href="#">Preguntas Frecuentes</a>
-      <a href="#">Envíos</a>
     </div>
+  </section>
 
-    <div class="footer-column">
-      <h3>Tiendas</h3>
-      <a href="#">Localizador</a>
-      <a href="#">Nuevos Productos</a>
-      <a href="#">Promociones</a>
-    </div>
 
-    <div class="footer-column">
-      <h3>Conéctate</h3>
-      <div class="social">
-        <a href="#">Facebook</a>
-        <a href="#">Instagram</a>
-        <a href="#">YouTube</a>
-        <a href="#">TikTok</a>
+
+
+  <section id="S3">
+    <div class="containerc">
+      <div class="cards">
+        <?php
+        require_once "config/db.php";
+        // Check connection
+        if ($conn->connect_error) {
+          die("Connection failed: " . $conn->connect_error);
+        }
+        ?>
+
+        <div style="text-align: center; margin-bottom: 30px;">
+          <h2 style="color: #0d2919; font-size: 2.5rem; margin-bottom: 10px;">Medicamentos</h2>
+          <input type="text" id="search-input" placeholder="Buscar medicamento..."
+            style="padding: 10px 20px; width: 300px; border-radius: 20px; border: 1px solid #ccc; outline: none;">
+        </div>
+
+        <div class="cards" id="products-container">
+          <!-- Productos se cargarán aquí -->
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+          <button id="load-more"
+            style="padding: 10px 30px; background: #00754a; color: white; border: none; border-radius: 20px; cursor: pointer; display: none;">Ver
+            más</button>
+        </div>
+
       </div>
+  </section>
+
+  <!-- Script para búsqueda y paginación -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      let offset = 0;
+      const container = document.getElementById("products-container");
+      const loadMoreBtn = document.getElementById("load-more");
+      const searchInput = document.getElementById("search-input");
+      let currentSearch = "";
+
+      function loadProducts(reset = false) {
+        if (reset) {
+          container.innerHTML = "";
+          offset = 0;
+        }
+
+        fetch(`funcs/get_products.php?offset=${offset}&search=${encodeURIComponent(currentSearch)}`)
+          .then(response => response.text())
+          .then(html => {
+            if (html.trim() !== "") {
+              container.insertAdjacentHTML('beforeend', html);
+              offset += 3;
+              loadMoreBtn.style.display = "inline-block";
+            } else {
+              loadMoreBtn.style.display = "none";
+              if (reset) container.innerHTML = "<p style='width:100%; text-align:center; color: #666;'>No se encontraron resultados.</p>";
+            }
+          });
+      }
+
+      // Carga inicial
+      loadProducts();
+
+      // Evento Buscador
+      searchInput.addEventListener("input", function (e) {
+        currentSearch = e.target.value;
+        loadProducts(true); // Resetear y buscar
+      });
+
+      // Evento Ver Más
+      loadMoreBtn.addEventListener("click", function () {
+        loadProducts();
+      });
+    });
+  </script>
+
+
+  <footer class="footer">
+    <div class="footer-container">
+
+      <div class="footer-column">
+        <h3>Sobre Nosotros</h3>
+        <a href="#">Nuestra Historia</a>
+        <a href="#">Responsabilidad Social</a>
+        <a href="#">Trabaja con Nosotros</a>
+        <a href="#">Prensa</a>
+      </div>
+
+      <div class="footer-column">
+        <h3>Servicio al Cliente</h3>
+        <a href="#">Contáctanos</a>
+        <a href="#">Soporte</a>
+        <a href="#">Preguntas Frecuentes</a>
+        <a href="#">Envíos</a>
+      </div>
+
+      <div class="footer-column">
+        <h3>Tiendas</h3>
+        <a href="#">Localizador</a>
+        <a href="#">Nuevos Productos</a>
+        <a href="#">Promociones</a>
+      </div>
+
+      <div class="footer-column">
+        <h3>Conéctate</h3>
+        <div class="social">
+          <a href="#">Facebook</a>
+          <a href="#">Instagram</a>
+          <a href="#">YouTube</a>
+          <a href="#">TikTok</a>
+        </div>
+      </div>
+
     </div>
 
-  </div>
+    <div class="footer-bottom">
+      <p>© 2025 Farmacia del amor — Inspirado en Starbucks</p>
+    </div>
+  </footer>
+  <script src="/Proyecto-Final-Billy-G3/script.js"></script>
+  <script src="/Proyecto-Final-Billy-G3/libs/bootstrap-5.3.8-dist/bootstrap.min.js"></script>
+</body>
 
-  <div class="footer-bottom">
-    <p>© 2025 Farmacia del amor — Inspirado en Starbucks</p>
-  </div>
-</footer>
-    <script src="/Proyecto-Final-Billy-G3/script.js"></script>
-    <script src="/Proyecto-Final-Billy-G3/libs/bootstrap-5.3.8-dist/bootstrap.min.js"></script>
-  </body>
 </html>

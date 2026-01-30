@@ -1,0 +1,73 @@
+/* Admin Custom Styles to match Main Site */
+:root {
+    --primary-green: #0d2919;
+    --light-green: #cdf1db;
+    --starbucks-green: #1e3932;
+    --accent-green: rgb(0, 162, 30);
+    --bg-light: #f7fffa;
+}
+
+body {
+    background-color: var(--bg-light);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.navbar-custom {
+    background-color: var(--primary-green);
+}
+
+.navbar-brand,
+.navbar-text {
+    color: white !important;
+}
+
+.card-custom {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.card-header-custom {
+    background-color: var(--starbucks-green);
+    color: white;
+    font-weight: bold;
+    border-radius: 12px 12px 0 0 !important;
+}
+
+.btn-primary-custom {
+    background-color: var(--primary-green);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 8px 20px;
+    transition: all 0.3s;
+}
+
+.btn-primary-custom:hover {
+    background-color: var(--accent-green);
+    transform: scale(1.05);
+}
+
+.btn-danger-custom {
+    background-color: #8B0000;
+    /* Red but darker/elegant */
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 5px 15px;
+}
+
+.btn-danger-custom:hover {
+    background-color: #a00000;
+}
+
+/* Override Bootstrap tables */
+.table-custom thead {
+    background-color: var(--primary-green);
+    color: white;
+}
+
+.table-custom tbody tr:hover {
+    background-color: var(--light-green);
+}
