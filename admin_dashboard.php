@@ -25,7 +25,7 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['rol']) || $_SESSION['rol']
 
     <nav class="navbar navbar-expand-lg navbar-custom mb-4">
         <div class="container">
-            <a class="navbar-brand" href="#">Farmacia Admin</a>
+            <a class="navbar-brand" href="index.php">Farmacia Admin</a>
             <div class="d-flex">
                 <span class="navbar-text me-3">
                     Hola, <?php echo $_SESSION['nombre']; ?>
@@ -50,6 +50,8 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['rol']) || $_SESSION['rol']
                             </div>
                         </div>
                     </div>
+
+
 
                     <div class="col-md-12 mt-4">
                         <div class="card card-custom">

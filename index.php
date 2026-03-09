@@ -6,7 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Farmacia</title>
   <link rel="shortcut icon" href="assets/img/logo.webp" type="image/x-icon">
+  <link rel="stylesheet" href="stylea.css" />
   <link rel="stylesheet" href="style.css" />
+
 </head>
 
 <body>
@@ -14,28 +16,25 @@
   <?php session_start(); ?>
 
   <header>
-    <img class="logo" src="assets/img/logo.webp" alt="" />
+    <img class="logo" src="assets/img/logo.webp" alt="Logo Farmacia" />
 
-    <!-- aqui va el logo -->
     <nav>
       <ul>
         <li><a href="#S1">Inicio</a></li>
         <li><a href="#S2">Desarrolladores</a></li>
         <li><a href="#S3">Stock</a></li>
-        <li><a href="#"></a></li>
-        <li><a href="#"></a></li>
 
         <?php if (isset($_SESSION['user_id'])): ?>
-          <li><span style="color: white; font-weight: bold;">Hola,
-              <?php echo $_SESSION['nombre']; ?>
-            </span></li>
+          <li class="user-info">
+            <span>Hola, <?php echo $_SESSION['nombre']; ?></span>
+          </li>
           <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'admin'): ?>
             <li><a href="admin_dashboard.php">Panel Admin</a></li>
           <?php endif; ?>
-          <li class="b"><a href="funcs/logout.php">Cerrar Sesión</a></li>
+          <li class="btn-logout"><a href="funcs/logout.php">Cerrar Sesión</a></li>
         <?php else: ?>
           <li><a href="register.php">Registrarse</a></li>
-          <li class="b"><a href="login.php">Iniciar Sesi&oacute;n</a></li>
+          <li class="btn-login"><a href="login.php">Iniciar Sesión</a></li>
         <?php endif; ?>
       </ul>
     </nav>

@@ -1,3 +1,10 @@
+* {
+  box-sizing: 0;
+
+  scroll-behavior: smooth;
+
+}
+
 :root {
   --shadow-color: 169deg 100% 23%;
   --shadow-elevation-low: 0.3px 0.5px 0.7px hsl(var(--shadow-color) / 0.34),
@@ -36,45 +43,7 @@ body {
   border-radius: 30px;
 }
 
-header {
-  background: rgb(0, 0, 0);
-  width: 100%;
-  position: fixed;
-  top: 0.01px;
-  z-index: 9999999;
-}
 
-nav {
-  float: right;
-}
-
-nav ul {
-  list-style: none;
-  overflow: hidden;
-}
-
-nav ul li {
-  float: left;
-  font-family: Arial, sans-serif;
-  font-size: 16px;
-  transition: all 0.3s;
-}
-
-nav ul li a {
-  display: block;
-  padding: 10px;
-  color: #fff;
-  text-decoration: none;
-  transition: all 0.3s;
-}
-
-nav ul li:hover {
-  background: rgb(0, 162, 30);
-}
-
-.b a {
-  color: black;
-}
 
 .b a {
   color: black;
