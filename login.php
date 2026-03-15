@@ -1,38 +1,110 @@
 <?php session_start(); ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Iniciar Sesión</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Farmacia del Amor</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow-elevation-medium);
+        }
+        .login-container h2 {
+            text-align: center;
+            color: var(--color-primary);
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--color-dark);
+            font-weight: 500;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+        .btn-login-submit {
+            width: 100%;
+            padding: 14px;
+            background: var(--color-accent);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-login-submit:hover {
+            background: var(--color-accent-hover);
+            transform: translateY(-2px);
+        }
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .register-link a {
+            color: var(--color-accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+    </style>
 </head>
+<body>
+    <div class="login-container">
+        <h2>Iniciar Sesión</h2>
+        
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="error-message">
+                <?php 
+                    echo $_SESSION['error'];
+                    unset($_SESSION['error']);
+                ?>
+            </div>
+        <?php endif; ?>
 
-<body class="bg-dark text-white d-flex justify-content-center align-items-center vh-100">
+        <!-- IMPORTANTE: El action apunta a funcs/login_user.php -->
+        <form action="funcs/login_user.php" method="POST">
+            <div class="form-group">
+                <label for="email">Correo Electrónico</label>
+                <input type="email" id="email" name="email" required placeholder="ejemplo@correo.com">
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" required placeholder="••••••••">
+            </div>
+            <button type="submit" class="btn-login-submit">Iniciar Sesión</button>
+        </form>
 
-<div class="card p-4 shadow-lg" style="width: 350px;">
-    <h3 class="text-center mb-3">Iniciar Sesión</h3>
-
-    <form action="funcs/login_user.php" method="POST">
-
-        <div class="mb-3">
-            <label class="form-label">Correo</label>
-            <input type="email" name="correo" class="form-control" required>
+        <div class="register-link">
+            ¿No tienes cuenta? <a href="register.php">Regístrate aquí</a>
         </div>
-
-        <div class="mb-3">
-            <label class="form-label">Contraseña</label>
-            <input type="password" name="password" class="form-control" required>
-        </div>
-
-        <button class="btn btn-success w-100" type="submit">Entrar</button>
-
-        <p class="mt-3 text-center">
-            ¿No tienes cuenta? <a href="register.php">Regístrate</a>
-        </p>
-
-    </form>
-</div>
-
+    </div>
 </body>
 </html>

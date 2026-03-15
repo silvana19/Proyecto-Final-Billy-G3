@@ -1,43 +1,79 @@
 <?php
-require_once "../config/db.php";
 session_start();
+require_once "../config/db.php";
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// ACTIVAR REPORTE DE ERRORES PARA DEPURACIÓN
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-    $correo = $_POST['correo'];
+// Verificar que la conexión existe
+if (!isset($conn)) {
+    die("Error: No hay conexión a la base de datos");
+}
+
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Verificar que los campos existen
+    if (!isset($_POST['email']) || !isset($_POST['password'])) {
+        $_SESSION['error'] = "Por favor complete todos los campos";
+        header("Location: ../login.php");
+        exit();
+    }
+    
+    $email = trim($_POST['email']);
     $password = $_POST['password'];
-
-    $stmt = $conn->prepare("SELECT id, nombre, password, rol FROM usuarios WHERE correo = ?");
-    $stmt->bind_param("s", $correo);
+    
+    if (empty($email) || empty($password)) {
+        $_SESSION['error'] = "Por favor complete todos los campos";
+        header("Location: ../login.php");
+        exit();
+    }
+    
+    // IMPORTANTE: La columna se llama 'correo' no 'email'
+    $sql = "SELECT * FROM usuarios WHERE correo = ?";
+    $stmt = $conn->prepare($sql);
+    
+    if (!$stmt) {
+        $_SESSION['error'] = "Error en la consulta: " . $conn->error;
+        header("Location: ../login.php");
+        exit();
+    }
+    
+    $stmt->bind_param("s", $email);
     $stmt->execute();
-    $stmt->store_result();
-    $stmt->bind_result($id, $nombre, $hash, $rol);
-
-    if ($stmt->num_rows == 1) {
-        $stmt->fetch();
-
-        if (password_verify($password, $hash)) {
-            $_SESSION['user_id'] = $id;
-            $_SESSION['nombre'] = $nombre;
-            $_SESSION['rol'] = $rol;
-
-            $redirect_url = ($rol === 'admin') ? '../admin_dashboard.php' : '../index.php';
-
-            echo "<script>
-                    alert('Bienvenido $nombre');
-                    window.location='$redirect_url';
-                  </script>";
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows == 1) {
+        $user = $result->fetch_assoc();
+        
+        if (password_verify($password, $user['password'])) {
+            // Login exitoso
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['nombre'] = $user['nombre'];
+            $_SESSION['email'] = $user['correo']; // Usamos 'correo' aquí
+            $_SESSION['rol'] = $user['rol'];
+            $_SESSION['just_logged_in'] = true;
+            
+            header("Location: ../index.php");
+            exit();
         } else {
-            echo "<script>
-                    alert('Contraseña incorrecta');
-                    window.location='../login.php';
-                  </script>";
+            $_SESSION['error'] = "Contraseña incorrecta";
+            header("Location: ../login.php");
+            exit();
         }
     } else {
-        echo "<script>
-                alert('Ese correo no existe');
-                window.location='../login.php';
-              </script>";
+        $_SESSION['error'] = "Usuario no encontrado";
+        header("Location: ../login.php");
+        exit();
     }
+    
+    $stmt->close();
+} else {
+    header("Location: ../login.php");
+    exit();
 }
 ?>

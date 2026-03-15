@@ -1,107 +1,85 @@
 <?php
+/**
+ * get_products.php
+ * Devuelve tarjetas de productos en HTML con botón para agregar al carrito
+ * usando cart_functions.php (server-side, no localStorage).
+ */
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
 require_once "../config/db.php";
 
-$limit = 3;
+$limit  = 6;
 $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0;
-$search = isset($_GET['search']) ? $_GET['search'] : '';
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
 
-// Consulta para contar total
-$countSql = "SELECT COUNT(*) as total FROM productos";
-$countParams = [];
-$countTypes = "";
-
-if (!empty($search)) {
-    $countSql .= " WHERE nombre LIKE ? OR descripcion LIKE ?";
-    $searchTerm = "%$search%";
-    $countParams[] = $searchTerm;
-    $countParams[] = $searchTerm;
-    $countTypes .= "ss";
-}
-
-$countStmt = $conn->prepare($countSql);
-if (!empty($countParams)) {
-    $countStmt->bind_param($countTypes, ...$countParams);
-}
-$countStmt->execute();
-$countResult = $countStmt->get_result();
-$totalRow = $countResult->fetch_assoc();
-$totalProducts = $totalRow['total'];
-
-// Consulta para obtener productos
-$sql = "SELECT * FROM productos";
+$sql    = "SELECT * FROM productos";
 $params = [];
-$types = "";
+$types  = "";
 
 if (!empty($search)) {
-    $sql .= " WHERE nombre LIKE ? OR descripcion LIKE ?";
-    $params[] = $searchTerm;
-    $params[] = $searchTerm;
-    $types .= "ss";
+    $sql     .= " WHERE nombre LIKE ? OR descripcion LIKE ?";
+    $params[] = "%$search%";
+    $params[] = "%$search%";
+    $types   .= "ss";
 }
 
-$sql .= " ORDER BY id DESC LIMIT ? OFFSET ?";
+$sql     .= " LIMIT ? OFFSET ?";
 $params[] = $limit;
 $params[] = $offset;
-$types .= "ii";
+$types   .= "ii";
 
 $stmt = $conn->prepare($sql);
-if (!empty($params)) {
-    $stmt->bind_param($types, ...$params);
-}
+$stmt->bind_param($types, ...$params);
 $stmt->execute();
 $result = $stmt->get_result();
 
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $imagen = !empty($row['imagen']) ? $row['imagen'] : 'assets/img/placeholder.jpg';
-        ?>
-        <div class="card" data-id="<?php echo $row['id']; ?>">
-            <img src="<?php echo $imagen; ?>" 
-                 alt="<?php echo htmlspecialchars($row['nombre']); ?>" 
-                 onerror="this.src='assets/img/placeholder.jpg'; this.onerror=null;">
-            <div class="infoc">
-                <h3><?php echo htmlspecialchars($row['nombre']); ?></h3>
-                <p><?php echo htmlspecialchars($row['descripcion']); ?></p>
-                
-                <!-- Selector de cantidad simple -->
-                <div class="cantidad-selector">
-                    <label>Cantidad:</label>
-                    <div class="cantidad-control">
-                        <button type="button" onclick="cambiarCantidad(<?php echo $row['id']; ?>, -1)" class="cantidad-btn">-</button>
-                        <input type="number" id="cantidad_<?php echo $row['id']; ?>" 
-                               class="cantidad-input" value="1" min="1" 
-                               max="<?php echo $row['stock']; ?>" readonly>
-                        <button type="button" onclick="cambiarCantidad(<?php echo $row['id']; ?>, 1)" class="cantidad-btn">+</button>
-                    </div>
-                </div>
-
-                <!-- Precio -->
-                <p class="text-primary">$<?php echo number_format($row['precio'], 2); ?> c/u</p>
-                <p class="text-muted">Stock: <?php echo $row['stock']; ?> unidades</p>
-
-                <?php if ($row['stock'] > 0): ?>
-                    <button class="buy add-to-cart-btn" 
-                            onclick="agregarAlCarrito(<?php echo $row['id']; ?>, '<?php echo htmlspecialchars($row['nombre']); ?>', <?php echo $row['precio']; ?>, '<?php echo $row['imagen']; ?>')">
-                        <i class="fas fa-cart-plus"></i> Agregar al Carrito
-                    </button>
-                <?php else: ?>
-                    <button class="buy" style="background-color: #ccc; cursor: not-allowed;" disabled>Agotado</button>
-                <?php endif; ?>
-            </div>
-        </div>
-        <?php
-    }
-    
-    if ($offset + $limit < $totalProducts) {
-        echo '<!-- HAS_MORE -->';
-    }
-} else {
-    if ($offset == 0) {
+if ($result->num_rows === 0) {
+    if ($offset === 0) {
         echo "<p class='no-results'>No se encontraron productos.</p>";
     }
+    exit;
 }
 
-$stmt->close();
-$countStmt->close();
-$conn->close();
+while ($row = $result->fetch_assoc()) {
+    $id      = intval($row['id']);
+    $nombre  = htmlspecialchars($row['nombre']);
+    $desc    = htmlspecialchars($row['descripcion']);
+    $precio  = number_format(floatval($row['precio']), 2);
+    $stock   = intval($row['stock']);
+    $imagen  = !empty($row['imagen']) ? htmlspecialchars($row['imagen']) : 'assets/img/default.jpg';
+
+    // Para pasar datos al JS de forma segura
+    $nombre_js = addslashes($row['nombre']);
+    $imagen_js = addslashes($imagen);
+    $precio_raw = floatval($row['precio']);
+    ?>
+    <div class="card" data-product-id="<?= $id ?>">
+        <img src="<?= $imagen ?>" alt="<?= $nombre ?>" onerror="this.src='assets/img/default.jpg'" />
+        <div class="infoc">
+            <h3><?= $nombre ?></h3>
+            <p><?= $desc ?></p>
+            <p class="text-primary">RD$<?= $precio ?></p>
+            <p class="text-muted">Stock: <?= $stock ?></p>
+
+            <?php if ($stock > 0): ?>
+                <button
+                    class="buy"
+                    onclick="addToCartItem({
+                        id:    <?= $id ?>,
+                        name:  '<?= $nombre_js ?>',
+                        price: <?= $precio_raw ?>,
+                        image: '<?= $imagen_js ?>',
+                        stock: <?= $stock ?>
+                    })"
+                >
+                    🛒 Agregar al carrito
+                </button>
+            <?php else: ?>
+                <button class="buy" disabled style="background:#555;cursor:not-allowed;">
+                    Agotado
+                </button>
+            <?php endif; ?>
+        </div>
+    </div>
+    <?php
+}
 ?>

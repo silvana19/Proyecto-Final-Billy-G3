@@ -1,137 +1,174 @@
 <?php
-session_start();
+// Leer php://input ANTES de session_start()
+$raw_input = file_get_contents('php://input');
+
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
 require_once "../config/db.php";
 
 header('Content-Type: application/json');
 
+// ── 1. Método correcto ────────────────────────
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(['success' => false, 'error' => 'Método no permitido']);
+    exit;
+}
+
+// ── 2. Usuario logueado ───────────────────────
 if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['success' => false, 'message' => 'Debes iniciar sesión']);
+    echo json_encode(['success' => false, 'error' => 'Debes iniciar sesión para realizar un pedido']);
     exit;
 }
 
-// Obtener datos del POST
-$input = file_get_contents('php://input');
-$data = json_decode($input, true);
-
-if (!$data) {
-    echo json_encode(['success' => false, 'message' => 'Datos inválidos']);
+// ── 3. Carrito no vacío ───────────────────────
+if (empty($_SESSION['cart'])) {
+    echo json_encode(['success' => false, 'error' => 'Tu carrito está vacío']);
     exit;
 }
 
-// Validar datos requeridos
-$required = ['nombre', 'email', 'telefono', 'direccion', 'ciudad', 'codigo_postal', 'envio', 'pago'];
-foreach ($required as $field) {
-    if (empty($data[$field])) {
-        echo json_encode(['success' => false, 'message' => 'Campo ' . $field . ' es requerido']);
+// ── 4. Parsear input ──────────────────────────
+$input    = json_decode($raw_input, true) ?? [];
+$cart     = $_SESSION['cart'];
+$delivery = $input['delivery'] ?? 'home';
+$payment  = $input['payment']  ?? 'cash';
+$shipping = $input['shipping'] ?? [];
+$user_id  = intval($_SESSION['user_id']);
+
+// ── 5. Mapear campos del formulario a columnas de TU tabla ──
+// Tu tabla pedidos tiene: usuario_id, nombre, email, telefono,
+// direccion, ciudad, codigo_postal, metodo_envio, metodo_pago, total, estado, fecha_pedido
+
+$nombre        = htmlspecialchars($shipping['name']     ?? ($_SESSION['nombre'] ?? ''));
+$email         = htmlspecialchars($shipping['email']    ?? ($_SESSION['email']  ?? ''));
+$telefono      = htmlspecialchars($shipping['phone']    ?? '');
+$direccion     = htmlspecialchars($shipping['address']  ?? '');
+$ciudad        = htmlspecialchars($shipping['city']     ?? '');
+$codigo_postal = htmlspecialchars($shipping['province'] ?? '');
+
+// Si es pickup, usar datos de recogida
+if ($delivery === 'pickup') {
+    $nombre   = htmlspecialchars($shipping['name']  ?? ($_SESSION['nombre'] ?? ''));
+    $telefono = htmlspecialchars($shipping['phone'] ?? '');
+    $direccion  = 'Retiro en tienda - Av. Principal #123, Santiago';
+    $ciudad     = 'Santiago';
+    $codigo_postal = 'RD';
+}
+
+// Mapear método de envío y pago a tus valores
+$metodo_envio = ($delivery === 'home') ? 'Envío a domicilio' : 'Retiro en tienda';
+$metodo_pago  = match($payment) {
+    'card'     => 'Tarjeta de crédito/débito',
+    'transfer' => 'Transferencia bancaria',
+    'cash'     => 'Efectivo',
+    default    => 'Efectivo'
+};
+
+// ── 6. Calcular total ─────────────────────────
+$subtotal      = 0;
+foreach ($cart as $item) {
+    $subtotal += floatval($item['price']) * intval($item['quantity']);
+}
+$shipping_cost = ($delivery === 'home') ? 150.00 : 0.00;
+$total         = $subtotal + $shipping_cost;
+
+// ── 7. Verificar stock ────────────────────────
+foreach ($cart as $item) {
+    $pid  = intval($item['id']);
+    $qty  = intval($item['quantity']);
+
+    $stmt = $conn->prepare("SELECT stock, nombre FROM productos WHERE id = ?");
+    $stmt->bind_param("i", $pid);
+    $stmt->execute();
+    $row = $stmt->get_result()->fetch_assoc();
+
+    if (!$row) {
+        echo json_encode(['success' => false, 'error' => "Producto ID $pid no encontrado"]);
+        exit;
+    }
+    if (intval($row['stock']) < $qty) {
+        echo json_encode(['success' => false,
+            'error' => "Stock insuficiente para \"{$row['nombre']}\". Disponible: {$row['stock']}"
+        ]);
         exit;
     }
 }
 
-// Verificar que hay items en el carrito
-if (!isset($_SESSION['carrito']) || empty($_SESSION['carrito'])) {
-    echo json_encode(['success' => false, 'message' => 'El carrito está vacío']);
+// ── 8. Insertar en tu tabla pedidos ──────────
+// Columnas exactas: usuario_id, nombre, email, telefono, direccion,
+//                   ciudad, codigo_postal, metodo_envio, metodo_pago, total, estado, fecha_pedido
+$stmt = $conn->prepare(
+    "INSERT INTO pedidos 
+     (usuario_id, nombre, email, telefono, direccion, ciudad,
+      codigo_postal, metodo_envio, metodo_pago, total, estado, fecha_pedido)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendiente', NOW())"
+);
+
+if (!$stmt) {
+    echo json_encode(['success' => false, 'error' => 'Error prepare pedidos: ' . $conn->error]);
     exit;
 }
 
-// Iniciar transacción
-$conn->begin_transaction();
+$stmt->bind_param(
+    "issssssssd",
+    $user_id, $nombre, $email, $telefono,
+    $direccion, $ciudad, $codigo_postal,
+    $metodo_envio, $metodo_pago, $total
+);
 
-try {
-    $usuario_id = $_SESSION['user_id'];
-    $nombre = $conn->real_escape_string($data['nombre']);
-    $email = $conn->real_escape_string($data['email']);
-    $telefono = $conn->real_escape_string($data['telefono']);
-    $direccion = $conn->real_escape_string($data['direccion']);
-    $ciudad = $conn->real_escape_string($data['ciudad']);
-    $codigo_postal = $conn->real_escape_string($data['codigo_postal']);
-    $metodo_envio = $conn->real_escape_string($data['envio']);
-    $metodo_pago = $conn->real_escape_string($data['pago']);
-    
-    // Calcular total de productos
-    $subtotal = 0;
-    foreach ($_SESSION['carrito'] as $item) {
-        $subtotal += $item['precio'] * $item['cantidad'];
-    }
-    
-    // Calcular costo de envío
-    $costo_envio = 0;
-    if ($metodo_envio == 'estandar') {
-        $costo_envio = 150;
-    } elseif ($metodo_envio == 'express') {
-        $costo_envio = 250;
-    }
-    
-    $total = $subtotal + $costo_envio;
-    
-    // Insertar pedido
-    $stmt = $conn->prepare("
-        INSERT INTO pedidos (
-            usuario_id, nombre, email, telefono, direccion, ciudad, 
-            codigo_postal, metodo_envio, metodo_pago, total, estado, fecha_pedido
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendiente', NOW())
-    ");
-    
-    $stmt->bind_param(
-        "issssssssd",
-        $usuario_id, $nombre, $email, $telefono, $direccion, $ciudad,
-        $codigo_postal, $metodo_envio, $metodo_pago, $total
-    );
-    
-    if (!$stmt->execute()) {
-        throw new Exception("Error al crear el pedido");
-    }
-    
-    $pedido_id = $conn->insert_id;
-    
-    // Insertar detalles del pedido y actualizar stock
-    foreach ($_SESSION['carrito'] as $item) {
-        // Verificar stock actual
-        $stmt_stock = $conn->prepare("SELECT stock FROM productos WHERE id = ?");
-        $stmt_stock->bind_param("i", $item['id']);
-        $stmt_stock->execute();
-        $result_stock = $stmt_stock->get_result();
-        $producto = $result_stock->fetch_assoc();
-        
-        if ($producto['stock'] < $item['cantidad']) {
-            throw new Exception("Stock insuficiente para " . $item['nombre']);
-        }
-        
-        // Insertar detalle
-        $stmt_detalle = $conn->prepare("
-            INSERT INTO detalle_pedido (pedido_id, producto_id, cantidad, precio_unitario)
-            VALUES (?, ?, ?, ?)
-        ");
-        $stmt_detalle->bind_param("iiid", $pedido_id, $item['id'], $item['cantidad'], $item['precio']);
-        
-        if (!$stmt_detalle->execute()) {
-            throw new Exception("Error al guardar detalles del pedido");
-        }
-        
-        // Actualizar stock
-        $stmt_update = $conn->prepare("UPDATE productos SET stock = stock - ? WHERE id = ?");
-        $stmt_update->bind_param("ii", $item['cantidad'], $item['id']);
-        
-        if (!$stmt_update->execute()) {
-            throw new Exception("Error al actualizar stock");
-        }
-    }
-    
-    // Commit de la transacción
-    $conn->commit();
-    
-    // Limpiar carrito
-    unset($_SESSION['carrito']);
-    
-    echo json_encode([
-        'success' => true,
-        'message' => '¡Pedido realizado con éxito!',
-        'pedido_id' => $pedido_id
-    ]);
-    
-} catch (Exception $e) {
-    $conn->rollback();
-    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+if (!$stmt->execute()) {
+    echo json_encode(['success' => false, 'error' => 'Error execute pedidos: ' . $stmt->error]);
+    exit;
 }
 
-$conn->close();
+$order_id = $conn->insert_id;
+
+// ── 9. Insertar en pedido_items ───────────────
+// Primero ver qué columnas tiene pedido_items
+$check = $conn->query("DESCRIBE pedido_items");
+$cols  = [];
+while ($row = $check->fetch_assoc()) $cols[] = $row['Field'];
+
+// Intentar insertar con las columnas más comunes
+// (ajusta según tu estructura real)
+if (in_array('pedido_id', $cols) && in_array('producto_id', $cols)) {
+    $item_stmt = $conn->prepare(
+        "INSERT INTO pedido_items (pedido_id, producto_id, nombre, precio, cantidad)
+         VALUES (?, ?, ?, ?, ?)"
+    );
+} else if (in_array('venta_id', $cols)) {
+    // Por si usa otra nomenclatura
+    $item_stmt = $conn->prepare(
+        "INSERT INTO pedido_items (venta_id, producto_id, nombre, precio, cantidad)
+         VALUES (?, ?, ?, ?, ?)"
+    );
+} else {
+    // Fallback: solo registrar el pedido sin items detallados
+    $item_stmt = null;
+}
+
+foreach ($cart as $item) {
+    $pid    = intval($item['id']);
+    $qty    = intval($item['quantity']);
+    $pname  = $item['name'];
+    $pprice = floatval($item['price']);
+
+    if ($item_stmt) {
+        $item_stmt->bind_param("iisdi", $order_id, $pid, $pname, $pprice, $qty);
+        $item_stmt->execute();
+    }
+
+    // Descontar stock
+    $conn->query(
+        "UPDATE productos SET stock = stock - $qty WHERE id = $pid AND stock >= $qty"
+    );
+}
+
+// ── 10. Limpiar carrito ───────────────────────
+$_SESSION['cart']          = [];
+$_SESSION['last_order_id'] = $order_id;
+
+echo json_encode([
+    'success'  => true,
+    'order_id' => $order_id,
+    'total'    => $total
+]);
 ?>
