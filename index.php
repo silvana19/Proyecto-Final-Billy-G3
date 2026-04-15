@@ -1,6 +1,6 @@
 <?php
 session_start();
-// Inicializar carrito en sesión si no existe
+
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
@@ -11,21 +11,16 @@ $cartCount = array_sum(array_column($_SESSION['cart'], 'quantity'));
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Farmacia del Amor</title>
+  <title>FarmaExpress</title>
   <link rel="shortcut icon" href="assets/img/logo.webp" type="image/x-icon">
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════
-     TOAST CONTAINER
-═══════════════════════════════════════════ -->
+
 <div id="toast-container" class="toast-container"></div>
 
-<!-- ═══════════════════════════════════════════
-     CART SIDEBAR
-═══════════════════════════════════════════ -->
 <div id="cart-overlay" onclick="closeCartSidebar()"></div>
 <div id="cart-sidebar" class="cart-sidebar">
   <div class="cart-header">
@@ -62,16 +57,14 @@ $cartCount = array_sum(array_column($_SESSION['cart'], 'quantity'));
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     CHECKOUT MODAL — 3 PASOS
-═══════════════════════════════════════════ -->
+
 <div id="checkout-overlay-modal" class="checkout-overlay-modal" onclick="closeCheckout()"></div>
 <div id="checkout-modal" class="checkout-modal">
   <button class="checkout-modal-close" onclick="closeCheckout()">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
   </button>
 
-  <!-- Barra de pasos -->
+ 
   <div class="steps-bar">
     <div class="step active" id="step-ind-1"><div class="step-circle">1</div><span>Envío</span></div>
     <div class="step-line"></div>
@@ -80,7 +73,7 @@ $cartCount = array_sum(array_column($_SESSION['cart'], 'quantity'));
     <div class="step" id="step-ind-3"><div class="step-circle">3</div><span>Confirmar</span></div>
   </div>
 
-  <!-- ── PASO 1: Envío ── -->
+ 
   <div id="checkout-step-1" class="checkout-step">
     <h3 class="step-title">Información de Envío</h3>
 
@@ -103,7 +96,7 @@ $cartCount = array_sum(array_column($_SESSION['cart'], 'quantity'));
       </label>
     </div>
 
-    <!-- Formulario domicilio -->
+  
     <div id="form-home" class="form-grid">
       <div class="form-group span-2"><label>Nombre completo *</label><input type="text" id="sh-name" placeholder="Juan Pérez"></div>
       <div class="form-group"><label>Teléfono *</label><input type="tel" id="sh-phone" placeholder="+1 (809) 000-0000"></div>
@@ -121,12 +114,12 @@ $cartCount = array_sum(array_column($_SESSION['cart'], 'quantity'));
       <div class="form-group span-2"><label>Referencia / Instrucciones</label><input type="text" id="sh-notes" placeholder="Color de puerta, punto de referencia..."></div>
     </div>
 
-    <!-- Formulario pickup -->
+    
     <div id="form-pickup" style="display:none;">
       <div class="pickup-info-box">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="#00a86b" stroke-width="2"/><circle cx="12" cy="10" r="3" stroke="#00a86b" stroke-width="2"/></svg>
         <div>
-          <strong>Farmacia del Amor — Sucursal Principal</strong>
+          <strong>FarmaExpress — Sucursal Principal</strong>
           <p>Av. Principal #123, Santiago, RD</p>
           <p class="store-hours">Lun–Vie: 8am–8pm · Sáb–Dom: 9am–6pm</p>
         </div>
@@ -146,7 +139,6 @@ $cartCount = array_sum(array_column($_SESSION['cart'], 'quantity'));
     </div>
   </div>
 
-  <!-- ── PASO 2: Pago ── -->
   <div id="checkout-step-2" class="checkout-step" style="display:none;">
     <h3 class="step-title">Método de Pago</h3>
 
@@ -177,7 +169,7 @@ $cartCount = array_sum(array_column($_SESSION['cart'], 'quantity'));
       </label>
     </div>
 
-    <!-- Tarjeta -->
+    
     <div id="form-card" class="pay-detail">
       <div class="form-grid">
         <div class="form-group span-2">
@@ -198,14 +190,14 @@ $cartCount = array_sum(array_column($_SESSION['cart'], 'quantity'));
       </div>
     </div>
 
-    <!-- Transferencia -->
+    
     <div id="form-transfer" class="pay-detail" style="display:none;">
       <div class="bank-box">
         <h4>Datos bancarios</h4>
         <div class="bank-row"><span>Banco</span><strong>Banco Popular Dominicano</strong></div>
         <div class="bank-row"><span>Cuenta</span><strong>123-456789-0</strong></div>
         <div class="bank-row"><span>Tipo</span><strong>Cuenta Corriente</strong></div>
-        <div class="bank-row"><span>Titular</span><strong>Farmacia del Amor S.R.L.</strong></div>
+        <div class="bank-row"><span>Titular</span><strong>FarmaExpress S.R.L.</strong></div>
         <div class="bank-row"><span>RNC</span><strong>1-00-12345-6</strong></div>
       </div>
       <div class="form-group span-2" style="margin-top:1rem;">
@@ -301,7 +293,7 @@ $cartCount = array_sum(array_column($_SESSION['cart'], 'quantity'));
   <div class="header-container">
     <div class="logo-container">
       <img class="logo" src="assets/img/logo.webp" alt="Logo Farmacia" />
-      <span class="brand-name">Farmacia del Amor</span>
+      <span class="brand-name">FarmaExpress</span>
     </div>
 
     <nav>
@@ -358,7 +350,7 @@ $cartCount = array_sum(array_column($_SESSION['cart'], 'quantity'));
       <h2>¡Bienvenido, <?= htmlspecialchars($_SESSION['nombre']) ?>!</h2>
     </div>
     <div class="modal-body">
-      <p>Nos alegra verte de nuevo en <strong>Farmacia del Amor</strong></p>
+      <p>Nos alegra verte de nuevo en <strong>FarmaExpress</strong></p>
       <div class="welcome-stats">
         <div class="stat-item"><span class="stat-icon">⭐</span><span class="stat-text">Cliente desde 2024</span></div>
         <div class="stat-item"><span class="stat-icon">🛒</span><span class="stat-text">Carrito listo para usar</span></div>
@@ -428,7 +420,7 @@ endif;
     <div class="footer-column"><h3>Tiendas</h3><a href="#">Localizador</a><a href="#">Nuevos Productos</a><a href="#">Promociones</a></div>
     <div class="footer-column"><h3>Conéctate</h3><div class="social"><a href="#">Facebook</a><a href="#">Instagram</a><a href="#">YouTube</a><a href="#">TikTok</a></div></div>
   </div>
-  <div class="footer-bottom"><p>© 2025 Farmacia del Amor — Cuidando de tu salud con amor y dedicación</p></div>
+  <div class="footer-bottom"><p>© 2025 FarmaExpress — Cuidando de tu salud con amor y dedicación</p></div>
 </footer>
 
 <!-- ═══════════════════════════════════════════
