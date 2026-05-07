@@ -5,7 +5,7 @@ $input = json_decode(file_get_contents('php://input'), true);
 $mensajeUsuario = $input['mensaje'] ?? '';
 
 // Tu llave de Groq está perfecta, la dejamos igual
-$apiKey = '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';
+$apiKey = "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";
 
 $data = [
     // CAMBIO 1: El modelo debe ser de Groq, no de OpenAI
