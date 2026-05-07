@@ -1,0 +1,155 @@
+/* --- Contenedor del Botón Circular --- */
+#chat-circle {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 65px;
+    height: 65px;
+    background: #28a745; /* Verde farmacia */
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+#chat-circle:hover {
+    transform: scale(1.1); /* Se agranda un poco al pasar el mouse */
+    background: #218838;
+}
+
+#chat-circle:hover::after {
+    content: "Asistente de Farmacia";
+    position: absolute;
+    right: 75px;
+    background: #333;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+/* --- Ventana del Chat --- */
+#chat-box {
+    display: none; /* Se activa con el JS que ya tienes */
+    position: fixed;
+    bottom: 100px;
+    right: 25px;
+    width: 350px;
+    max-height: 500px;
+    height: 80vh;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1000;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    animation: fadeIn 0.3s ease-out; /* Animación de entrada */
+}
+
+/* --- Encabezado --- */
+#chat-box .header {
+    background: #28a745;
+    color: white;
+    padding: 18px;
+    font-weight: 600;
+    text-align: center;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+}
+
+/* --- Área de Mensajes --- */
+#chat-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #fdfdfd;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Estilo de las burbujas de texto */
+.msg {
+    max-width: 80%;
+    padding: 10px 14px;
+    border-radius: 15px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.msg-user {
+    align-self: flex-end;
+    background: #007bff; /* Azul para el usuario */
+    color: white;
+    border-bottom-right-radius: 2px;
+}
+
+.msg-ia {
+    align-self: flex-start;
+    background: #e9ecef; /* Gris claro para la IA */
+    color: #333;
+    border-bottom-left-radius: 2px;
+}
+
+/* --- Área de Input --- */
+.chat-input-area {
+    padding: 15px;
+    border-top: 1px solid #eee;
+    display: flex;
+    background: white;
+}
+
+#chat-input {
+    flex: 1;
+    border: 1px solid #e0e0e0;
+    padding: 10px 15px;
+    border-radius: 25px;
+    outline: none;
+    font-size: 14px;
+    transition: border 0.2s;
+}
+
+#chat-input:focus {
+    border-color: #28a745;
+}
+
+#send-btn {
+    background: #28a745;
+    border: none;
+    color: white;
+    width: 38px;
+    height: 38px;
+    margin-left: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+#send-btn:hover {
+    background: #218838;
+}
+
+/* Animación de aparición */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scrollbar personalizado para que se vea fino */
+#chat-content::-webkit-scrollbar {
+    width: 5px;
+}
+#chat-content::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
