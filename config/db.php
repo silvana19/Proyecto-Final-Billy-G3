@@ -1,7 +1,7 @@
 <?php
 $host = 'localhost';
 $user = 'root';
-$password = '';
+$password = '1234';
 $database = 'farmacia_db';
 
 $conn = new mysqli($host, $user, $password, $database);
