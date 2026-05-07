@@ -15,6 +15,8 @@ $cartCount = array_sum(array_column($_SESSION['cart'], 'quantity'));
   <link rel="shortcut icon" href="assets/img/logo.webp" type="image/x-icon">
   <link rel="stylesheet" href="styls.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="IA/IA.js"></script>
+  <link rel="stylesheet" href="IA/IA.css">
 </head>
 <body>
 
@@ -422,6 +424,23 @@ endif;
   </div>
   <div class="footer-bottom"><p>© 2025 FarmaExpress — Cuidando de tu salud con amor y dedicación</p></div>
 </footer>
+
+<!--CHAT BOT-->
+<!-- Insertamos el HTML del chat directamente -->
+<div id="chat-circle">
+    <span style="font-size: 24px;">🤖  </span>
+</div>
+
+<div id="chat-box">
+    <div class="header">Asistente de Farmacia</div>
+    <div id="chat-content">
+        <div class="msg msg-ia">¡Hola! ¿Cómo te sientes hoy? 😊 Descríbeme tus síntomas y te recomendaré la mejor opción para aliviarte pronto.</div>
+    </div>
+    <div class="chat-input-area">
+        <input type="text" id="chat-input" placeholder="Ej: Me duele la cabeza...">
+        <button id="send-btn">➤</button>
+    </div>
+</div>
 
 <!-- ═══════════════════════════════════════════
      JAVASCRIPT
